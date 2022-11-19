@@ -8,9 +8,8 @@ var day = EnvironmentHelper.ParseDayInput();
 Console.ForegroundColor = ConsoleColor.Blue;
 Console.WriteLine("====================================");
 Console.WriteLine($"        Advent Of Code {year}");
+Console.WriteLine($"             Day {day} ");
 Console.WriteLine("====================================");
-Console.ForegroundColor = ConsoleColor.Red;
-Console.WriteLine($"============ Day {day} ================");
 Console.ResetColor();
 var taskType = Type.GetType($"AoC.Tasks.Year{year}.Day{day}.Solution");
 
