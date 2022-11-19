@@ -38,21 +38,4 @@ public static class EnvironmentHelper
 
         return day;
     }
-
-    public static string ParsePartInput()
-    {
-        var part = Environment.GetEnvironmentVariable("PART");
-        if (part == null)
-        {
-            return "1";
-        }
-
-        var regex = new Regex(@"^[1-2]{1}$");
-        if (!regex.Match(part).Success)
-        {
-            throw new ArgumentException($"Part {part} is not valid.");
-        }
-
-        return part;
-    }
 }
