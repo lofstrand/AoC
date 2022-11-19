@@ -14,10 +14,7 @@ public static class MethodHelper
         }
 
         var stopwatch = Stopwatch.StartNew();
-        var result = methodInfo.Invoke(task, new object[]
-        {
-            input
-        });
+        var result = methodInfo.Invoke(task, new object[] { input });
         stopwatch.Stop();
 
         // Console.WriteLine($"Execution time: {stopwatch.ElapsedMilliseconds} milliseconds");

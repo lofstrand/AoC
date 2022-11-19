@@ -33,7 +33,7 @@ public static class InputHelper
         {
             throw new ArgumentException("Input cannot be empty or null");
         }
-        
+
         var list = input.Split(Environment.NewLine)
             .ToList();
 
