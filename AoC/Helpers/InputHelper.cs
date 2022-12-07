@@ -52,4 +52,40 @@ public static class InputHelper
             .ToList();
         return list;
     }
+
+    public static IEnumerable<Tuple<string, string>> ToTupleList(this IEnumerable<string> input, string separator = " ")
+    {
+        return input
+            .Select(line => line
+                .Split(separator))
+            .Select(splitVal => new Tuple<string, string>(splitVal[0], splitVal[1]))
+            .ToList();
+    }
+
+    public static List<List<T>> ChunkList<T>(this IEnumerable<T> data, int size)
+    {
+        return data
+            .Select((x, i) => new { Index = i, Value = x })
+            .GroupBy(x => x.Index / size)
+            .Select(x => x.Select(v => v.Value).ToList())
+            .ToList();
+    }
+
+    public static IEnumerable<Tuple<List<int>, List<int>>> ToTupleRange(this IEnumerable<string> input, string separator = ",")
+    {
+        var result = input.Select(line => line.Split(separator))
+            .Select(splitVal =>
+            {
+                var (p1, p2) = (splitVal[0].Split("-"), splitVal[1].Split("-"));
+                var p1Start = int.Parse(p1[0]);
+                var p1Count = int.Parse(p1[1]) - p1Start + 1;
+                var p2Start = int.Parse(p2[0]);
+                var p2Count = int.Parse(p2[1]) - p2Start + 1;
+
+                return new Tuple<List<int>, List<int>>(Enumerable.Range(p1Start, p1Count).ToList(), Enumerable.Range(p2Start, p2Count).ToList());
+            })
+            .ToList();
+
+        return result;
+    }
 }

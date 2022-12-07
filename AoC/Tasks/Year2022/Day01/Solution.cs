@@ -4,24 +4,55 @@ namespace AoC.Tasks.Year2022.Day01;
 
 public class Solution : ISolver
 {
-    private readonly List<int> _list;
+    private readonly List<string> _list;
 
     public Solution(string input)
     {
-        _list = InputHelper.ToIntList(input).ToList();
+        _list = InputHelper.ToStringList(input);
     }
 
-    public object PartOne() => MeasurementIncreaseCount(_list);
-    public object? PartTwo() => DoStuff2();
+    public object PartOne() => MostCalories(_list);
+    public object? PartTwo() => MostThreeCalories(_list);
 
-    private static int MeasurementIncreaseCount(IReadOnlyCollection<int> input)
+    private static int MostCalories(IReadOnlyCollection<string> input)
     {
-        var count = input.Zip(input.Skip(1)).Count(x => x.First < x.Second);
-        return count;
+        var sums = SummarizeCalories(input);
+
+        return sums.Max();
     }
 
-    private static int DoStuff2()
+    private static IEnumerable<int> SummarizeCalories(IReadOnlyCollection<string> input)
     {
-        return int.MaxValue;
+        var lists = CalorieChunks(input);
+        var sums = lists.Select(x =>
+            x.Select(int.Parse).ToList().Sum()
+        );
+        
+        return sums;
+    }
+
+    private static IEnumerable<List<string>> CalorieChunks(IEnumerable<string> input)
+    {
+        var lists = new List<List<string>>();
+
+        while (input.Any())
+        {
+            var temp = input.TakeWhile(x => !string.IsNullOrWhiteSpace(x)).ToList();
+            if (temp.Any())
+            {
+                lists.Add(temp);
+            }
+
+            input = input.Skip(int.Max(temp.Count, 1)).ToList();
+        }
+
+        return lists;
+    }
+
+    private static int MostThreeCalories(List<string> input)
+    {
+        var sums = SummarizeCalories(input);
+
+        return sums.OrderDescending().Take(3).Sum();
     }
 }
