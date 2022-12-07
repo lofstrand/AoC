@@ -9,7 +9,7 @@ public class Solution : ISolver
     public Solution(string input) => _list = InputHelper.ToStringList(input);
 
     public object PartOne() => RockPaperScissors(_list);
-    public object? PartTwo() => RockPaperScissorsP2(_list);
+    public object PartTwo() => RockPaperScissorsP2(_list);
 
     private static int RockPaperScissors(IReadOnlyCollection<string> input)
     {

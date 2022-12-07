@@ -12,16 +12,16 @@ public class Solution : ISolver
     }
 
     public object PartOne() => MostCalories(_list);
-    public object? PartTwo() => MostThreeCalories(_list);
+    public object PartTwo() => MostThreeCalories(_list);
 
-    private static int MostCalories(IReadOnlyCollection<string> input)
+    private static int MostCalories(List<string> input)
     {
         var sums = SummarizeCalories(input);
 
         return sums.Max();
     }
 
-    private static IEnumerable<int> SummarizeCalories(IReadOnlyCollection<string> input)
+    private static IEnumerable<int> SummarizeCalories(List<string> input)
     {
         var lists = CalorieChunks(input);
         var sums = lists.Select(x =>
@@ -31,7 +31,7 @@ public class Solution : ISolver
         return sums;
     }
 
-    private static IEnumerable<List<string>> CalorieChunks(IEnumerable<string> input)
+    private static IEnumerable<List<string>> CalorieChunks(List<string> input)
     {
         var lists = new List<List<string>>();
 

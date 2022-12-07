@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using AoC.Helpers;
 
 namespace AoC.Tasks.Year2022.Day03;
@@ -12,9 +11,9 @@ public class Solution : ISolver
 
     public object PartOne() => PrioritiesSum(_list);
 
-    public object? PartTwo() => GroupOfThree(_list);
+    public object PartTwo() => GroupOfThree();
 
-    private int GroupOfThree(List<string> list)
+    private int GroupOfThree()
     {
         var chunkList = _list.ChunkList(3);
         var result = chunkList.Select(chunk =>
@@ -28,7 +27,7 @@ public class Solution : ISolver
         return result;
     }
 
-    private int PrioritiesSum(List<string> list)
+    private static int PrioritiesSum(IEnumerable<string> list)
     {
         var result = list
             .Select(x => new Tuple<string, string>(x.Substring(0, x.Length / 2), x.Substring(x.Length / 2, x.Length / 2)))

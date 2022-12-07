@@ -25,7 +25,7 @@ public class Solution : ISolver
         return resp;
     }
 
-    public object? PartTwo()
+    public object PartTwo()
     {
         var stacks = CratesToStacks();
         List<Instruction> instructions = GetInstructions();
@@ -74,7 +74,7 @@ public class Solution : ISolver
 
         Regex rx = new Regex("[a-zA-Z]");
         var crateCount = crates.Select(x => rx.Matches(x).Count).Max();
-        var stacks = Enumerable.Range(0, crateCount + 1).Select(x => new Stack<string>()).ToArray();
+        var stacks = Enumerable.Range(0, crateCount + 1).Select(_ => new Stack<string>()).ToArray();
         crates.Reverse();
         crates.ForEach(x =>
         {
