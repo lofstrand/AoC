@@ -26,8 +26,26 @@ public class Solution : ISolver
 
         PopulateGridWithTrees(grid);
         CheckViewDistances(grid, visibleTrees);
+        int result = GetMaxViewDistance(visibleTrees);
 
-        return int.MinValue;
+        return result;
+        // 431460 too low
+        // 2298780 Too high
+        // 3130512 Too high
+    }
+
+    private int GetMaxViewDistance(int[][] visibleTrees)
+    {
+        int viewDistance = int.MinValue;
+        for (int row = 1; row < visibleTrees.Length - 1; row++)
+        {
+            for (int col = 1; col < visibleTrees[row].Length - 1; col++)
+            {
+                viewDistance = Math.Max(visibleTrees[row][col], viewDistance);
+            }
+        }
+
+        return viewDistance;
     }
 
     private int CountVisibleTrees(int[][] visibleTrees)
@@ -72,60 +90,66 @@ public class Solution : ISolver
     {
         var element = grid[row][col];
 
-        var left = grid[row].ToList().Take(col).Skip(1);
-        var right = grid[row].ToList().Skip(col + 1);
-        var top = grid.ToList().Select(x => x[col]).Take(row).Skip(1);
-        var below = grid.ToList().Select(x => x[col]).Skip(row + 1).SkipLast(1);
+        var left = grid[row].ToList().Take(col).Skip(1).ToList();
+        var right = grid[row].ToList().Skip(col + 1).SkipLast(1).ToList();
+        var top = grid.ToList().Select(x => x[col]).Take(row).Skip(1).ToList();
+        var below = grid.ToList().Select(x => x[col]).Skip(row + 1).SkipLast(1).ToList();
+        right.Reverse();
+        below.Reverse();
         var leftStack = new Stack<int>(left);
         var rightStack = new Stack<int>(right);
         var topStack = new Stack<int>(top);
         var belowStack = new Stack<int>(below);
 
-        int topViewSight = 1;
-        while (topStack.Any() && topStack.Pop() < element)
+        int topViewSight = 0;
+        while (topStack.Any())
         {
+            var val = topStack.Pop();
             topViewSight++;
-            if (topStack.Any() && topStack.Peek() == element)
+
+            if (val >= element)
             {
-                topViewSight++;
                 break;
             }
         }
 
-        int belowViewSight = 1;
-        while (belowStack.Any() && belowStack.Pop() < element)
+        int belowViewSight = 0;
+        while (belowStack.Any())
         {
+            var val = belowStack.Pop();
             belowViewSight++;
-            if (belowStack.Any() && belowStack.Peek() == element)
+
+            if (val >= element)
             {
-                belowViewSight++;
                 break;
             }
         }
 
-        int rightViewSight = 1;
-        while (rightStack.Any() && rightStack.Pop() < element)
+        int rightViewSight = 0;
+        while (rightStack.Any())
         {
+            var val = rightStack.Pop();
             rightViewSight++;
-            if (rightStack.Any() && rightStack.Peek() == element)
+
+            if (val >= element)
             {
-                rightViewSight++;
                 break;
             }
         }
 
-        int leftViewSight = 1;
-        while (leftStack.Any() && leftStack.Pop() < element)
+        int leftViewSight = 0;
+        while (leftStack.Any())
         {
+            var val = leftStack.Pop();
             leftViewSight++;
-            if (leftStack.Any() && leftStack.Peek() == element)
+
+            if (val >= element)
             {
-                leftViewSight++;
                 break;
             }
         }
 
-        var result = topViewSight * belowViewSight * leftViewSight * rightViewSight;
+        var result = Math.Max(1, topViewSight) * Math.Max(1, belowViewSight) * Math.Max(1, leftViewSight) * Math.Max(1, rightViewSight);
         return result;
     }
 
