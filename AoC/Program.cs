@@ -1,5 +1,4 @@
 ﻿using AoC;
-using AoC.Helpers;
 
 var year = EnvironmentHelper.ParseYearInput();
 var day = EnvironmentHelper.ParseDayInput();

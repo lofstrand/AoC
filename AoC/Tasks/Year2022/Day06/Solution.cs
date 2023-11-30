@@ -1,6 +1,4 @@
-﻿using AoC.Helpers;
-
-namespace AoC.Tasks.Year2022.Day06;
+﻿namespace AoC.Tasks.Year2022.Day06;
 
 public class Solution : ISolver
 {
