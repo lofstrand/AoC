@@ -11,6 +11,7 @@ Console.WriteLine($"             Day {day} ");
 Console.WriteLine("====================================");
 Console.ResetColor();
 
+await InputHelper.GetInput(year, day);
 var taskType = Type.GetType($"AoC.Tasks.Year{year}.Day{day}.Solution");
 if (taskType is null)
 {
@@ -18,6 +19,7 @@ if (taskType is null)
     return;
 }
 
+await InputHelper.GetInput(year, day);
 var input = InputHelper.ReadTaskInput(year, day);
 var task = (ISolver) Activator.CreateInstance(taskType, input)!;
 

@@ -2,7 +2,7 @@
 
 namespace AoC.Helpers;
 
-public static class EnvironmentHelper
+public static partial class EnvironmentHelper
 {
     public static string ParseYearInput()
     {
@@ -30,7 +30,7 @@ public static class EnvironmentHelper
             return DateTime.UtcNow.Day.ToString("00");
         }
 
-        var regex = new Regex(@"^0*([1-9]|1[0-9]|2[0-5])$");
+        var regex = DayRegex();
         if (!regex.Match(day).Success)
         {
             throw new ArgumentException($"Day {day} is not valid.");
@@ -38,4 +38,7 @@ public static class EnvironmentHelper
 
         return day;
     }
+
+    [GeneratedRegex(@"^0*([1-9]|1[0-9]|2[0-5])$")]
+    private static partial Regex DayRegex();
 }

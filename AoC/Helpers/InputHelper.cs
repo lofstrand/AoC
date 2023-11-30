@@ -1,7 +1,67 @@
-﻿namespace AoC.Helpers;
+﻿using System.Net;
+using System.Text;
+
+namespace AoC.Helpers;
 
 public static class InputHelper
 {
+    public static async Task GetInput(string year, string day)
+    {
+        var cookie = Environment.GetEnvironmentVariable("SESSION_COOKIE");
+        var projectRootPath = PathHelper.GetProjectRootPath();
+        var filePath = Path.Combine(projectRootPath, "Tasks", $"Year{year}", $"Day{day}", "input.txt");
+        var directory = Path.GetDirectoryName(filePath);
+        if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+
+        if (!File.Exists(filePath))
+        {
+            var uri = new Uri("https://adventofcode.com");
+            var cookies = new CookieContainer();
+            cookies.Add(uri, new Cookie("session", cookie));
+            await using var file = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
+            using var handler = new HttpClientHandler();
+            handler.CookieContainer = cookies;
+            using var client = new HttpClient(handler);
+            client.BaseAddress = uri;
+            using var response = await client.GetAsync($"/{year}/day/{day}/input");
+            await using var stream = await response.Content.ReadAsStreamAsync();
+
+            await stream.CopyToAsync(file);
+            // Create Solution.cs file if it does not exist
+            var solutionFilePath = Path.Combine(projectRootPath, $"Tasks/Year{year}/Day{day}/Solution.cs");
+            if (!File.Exists(solutionFilePath))
+            {
+                CreateSolutionFile(solutionFilePath, year, day);
+            }
+        }
+    }
+
+    private static void CreateSolutionFile(string filePath, string year, string day)
+    {
+        var content = $$"""
+                        namespace AoC.Tasks.Year{{year}}.Day{{day}};
+    
+                        public class Solution : ISolver
+                        {
+                            private readonly List<string> _list = InputHelper.ToStringList(input);
+    
+                            public object PartOne()
+                            {
+                                return int.MinValue;
+                            }
+    
+                            public object PartTwo()
+                            {
+                                return int.MinValue;
+                            }
+                        }
+                        """;
+        File.WriteAllText(filePath, content, Encoding.UTF8);
+    }
+
     public static string ReadTaskInput(string year, string day)
     {
         var projectRootPath = PathHelper.GetProjectRootPath();
