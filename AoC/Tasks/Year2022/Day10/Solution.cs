@@ -37,23 +37,28 @@ public class Solution : ISolver
     public object PartTwo()
     {
         var cycles = GetCycles();
-        var drawnCycles = new List<List<string>>();
-        var tempList = Enumerable.Range(0, 40).ToList().Select(x => ".").ToList();
+        var drawnCycles = new List<string[]>();
+        var tempList = Enumerable.Range(0, 40).ToList().Select(_ => ".").ToArray();
         for (int i = 0; i < cycles.Count; i++)
         {
-            if (cycles.Count % 40 == 0)
+            Console.WriteLine($"Start cycle\t {i}: begin executing {_list.ElementAt(i).Command} {_list.ElementAt(i).Value}");
+            if (i is 40 or 80 or 120 or 160 or 200 or 240)
             {
                 drawnCycles.Add(tempList);
-                tempList = Enumerable.Range(0, 40).ToList().Select(x => ".").ToList();
+                tempList = Enumerable.Range(0, 40).ToList().Select(_ => ".").ToArray();
             }
 
-            // tempList.ElementAt(i)
-
+            var index = cycles.ElementAt(i);
+            Console.WriteLine($"During cycle\t {i}: CRT draws pixel in position {index}");
+            if (index > 0)
+            {
+                tempList[index] = "#";
+            }
         }
-        
+
         drawnCycles.ForEach(cList =>
         {
-            cList.ForEach(Console.Write);
+            cList.ToList().ForEach(Console.Write);
             Console.WriteLine();
         });
         return int.MinValue;
