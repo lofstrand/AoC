@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace AoC.Helpers;
 
@@ -46,8 +47,13 @@ public static class InputHelper
     
                         public class Solution : ISolver
                         {
-                            private readonly List<string> _list = InputHelper.ToStringList(input);
-    
+                            private readonly List<string> _list;
+                            
+                            public Solution(string input)
+                            {
+                                _list = InputHelper.ToStringList(input);
+                            }
+        
                             public object PartOne()
                             {
                                 return int.MinValue;
@@ -94,8 +100,7 @@ public static class InputHelper
             throw new ArgumentException("Input cannot be empty or null");
         }
 
-        var list = input.Split(Environment.NewLine)
-            .ToList();
+        var list = Regex.Split(input, @"\n+").Where(s => !string.IsNullOrEmpty(s)).ToList();
 
         return list;
     }
@@ -145,6 +150,8 @@ public static class InputHelper
                 return new Tuple<List<int>, List<int>>(Enumerable.Range(p1Start, p1Count).ToList(), Enumerable.Range(p2Start, p2Count).ToList());
             })
             .ToList();
+        
+        // 54412 too low
 
         return result;
     }

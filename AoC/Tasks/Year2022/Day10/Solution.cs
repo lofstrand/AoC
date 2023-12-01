@@ -87,6 +87,6 @@ public class Solution : ISolver
 
 public class Instruction
 {
-    public string Command { get; set; }
+    public string? Command { get; set; }
     public int Value { get; set; }
 }
