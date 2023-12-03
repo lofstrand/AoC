@@ -56,7 +56,7 @@ public class Solution(string input) : ISolver
             dict.TryGetValue(lastA.Value, out var last);
             return first * 10 + last;
         }).Sum();
-        // 54418 = correct
+
         return sum;
     }
 }
