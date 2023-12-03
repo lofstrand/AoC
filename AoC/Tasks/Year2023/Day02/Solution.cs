@@ -2,14 +2,9 @@
 
 namespace AoC.Tasks.Year2023.Day02;
 
-public class Solution : ISolver
+public class Solution(string input) : ISolver
 {
-    private readonly List<string> _list;
-
-    public Solution(string input)
-    {
-        _list = InputHelper.ToStringList(input);
-    }
+    private readonly List<string> _list = InputHelper.ToStringList(input);
 
     public object PartOne()
     {
